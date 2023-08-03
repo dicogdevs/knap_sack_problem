@@ -1,27 +1,22 @@
-def snap_sack_problem(items: dict, snap_sack_size: int):
+def get_float_sizes(items: dict):
+    return sorted([cw['weight'] - int(cw['weight']) for cw in items.values() if isinstance(cw['weight'], float)])
+
+def get_calculated_sizes(items: dict, knap_sack_size: int) -> dict:
+    float_sizes = get_float_sizes(items)
+    return {i: [i + float_size for float_size in float_sizes] for i in range(knap_sack_size + 1)}
+
+      
+
+def snap_sack_problem(items: dict, knap_sack_size: int):
   grid = {}
-  last_item = ''
-  for item, cost_and_weight in items.items():
-    grid[item] = []
-    for i in range(0, snap_sack_size):
-      current_size = i + 1
-      grid[item].append({'items': [], 'items_sum': 0})
-      if cost_and_weight['weight'] == current_size:
-        grid[item][i ]['items'].append(item)
-        grid[item][i]['items_sum'] += cost_and_weight['cost']
-      elif cost_and_weight['weight']  < current_size:
-        grid[item][i]['items'].append(item)
-        grid[item][i]['items_sum'] += cost_and_weight['cost']
-        if last_item:
-          for j in grid[last_item][i-1]['items']:
-            grid[item][i-1]['items'].append(j)
-          grid[item][i-1]['items_sum'] = grid[last_item][i-1]['items_sum']
-      else:
-        if last_item:
-          for xd in grid[last_item][i - 1 - cost_and_weight['weight']]['items']:
-            grid[item][i - 1]['items'].append(xd)
-          grid[item][i - 1]['items_sum'] = grid[last_item][i - 1 - cost_and_weight['weight']]['items_sum']
-    last_item = item
+  sizes = get_calculated_sizes(items, knap_sack_size)
+  for item, attrs in items.items():
+    grid[item] = {}
+    current_item = grid[item]
+    current_item_cost = attrs['cost']
+    current_item_weight = attrs['weight']
+    for size, float_sizes in sizes.items():
+      pass
   return grid
     
     
@@ -39,10 +34,16 @@ def main():
     'laptop': {
       'cost': 2000,
       'weight': 3
+    },
+    'gold': {
+      'cost': 10000,
+      'weight': 0.5
+      
     }
+      
+      
   }
-  RESULT = snap_sack_problem(items, 4)
-  print(RESULT)
+  print(get_calculated_sizes(items, 4))
   pass
 
 if __name__ == '__main__':
