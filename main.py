@@ -7,16 +7,23 @@ def get_calculated_sizes(items: dict, knap_sack_size: int) -> dict:
 
       
 
-def snap_sack_problem(items: dict, knap_sack_size: int):
+def knap_sack_problem(items: dict, knap_sack_size: int):
   grid = {}
   sizes = get_calculated_sizes(items, knap_sack_size)
   for item, attrs in items.items():
-    grid[item] = {}
-    current_item = grid[item]
     current_item_cost = attrs['cost']
     current_item_weight = attrs['weight']
+    grid[item] = {}
+    current_gridded_item = grid[item]    
     for size, float_sizes in sizes.items():
-      pass
+      int_size = int(size)
+      if (int_size != 0):
+        
+        if (current_item_weight == int_size):
+          current_gridded_item[size] = {
+              'items': [item],
+              'worth': current_item_cost
+            }
   return grid
     
     
@@ -43,7 +50,7 @@ def main():
       
       
   }
-  print(get_calculated_sizes(items, 4))
+  print(knap_sack_problem(items, 4))
   pass
 
 if __name__ == '__main__':
